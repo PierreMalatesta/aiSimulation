@@ -21,7 +21,7 @@ public class Grid : MonoBehaviour
             for (int z = 0; z < Size; z++)  // each columm of the grid
             {
                 Node NewNode = new Node();
-                NewNode.Postion = new Vector2(x, z);    //setting the position
+                NewNode.Position = new Vector2(x, z);    //setting the position
                 Instantiate(GridPrefab, new Vector3(x, 0, z), Quaternion.identity);  //spawning a prefab
                 grid[x, z] = NewNode;   //takes node variable, puts it in array
 
@@ -51,6 +51,17 @@ public class Grid : MonoBehaviour
 
         while (OpenNodes.Count > 0)
         {
+            OpenNodes = SortListByFScore(OpenNodes);
+            CurrentNode = OpenNodes[0];
+
+            if (CurrentNode == EndNode)
+            {
+                break;
+            }
+
+            OpenNodes.Remove(CurrentNode);
+            ClosedNodes.Add(CurrentNode);
+
             foreach(Node c in CurrentNode.Connections)      //Simplifed for loops, go through the loop each time using the c node
             {
                 if (!ClosedNodes.Contains(c))
@@ -58,28 +69,66 @@ public class Grid : MonoBehaviour
                     float gScore;
                     float hScore;
                     float fScore;
-                    float NewfScore;
 
-                    hScore = Vector2.Distance(c.Postion, EndNode.Postion);
-                    gScore = Vector2.Distance(c.Postion, StartPositon);
+                    gScore = CurrentNode.gScore + 1;
+                    hScore = Vector2.Distance(c.Position, EndNode.Position);
                     fScore = (gScore + hScore);
-
-                    if (NewfScore < fScore)
+                    if (!OpenNodes.Contains(c))
                     {
-                        //Update f value
-                        //Set parent to be the current vertex
+                        c.gScore = gScore;
+                        c.fScore = fScore;
+                        c.parent = CurrentNode;
+                        OpenNodes.Add(c);
+                    }
+                    else if (fScore < c.fScore)
+                    {
+                        c.gScore = gScore;
+                        c.fScore = fScore;
+                        c.parent = CurrentNode;
                     }
                 }
-                //NEXT adjacent vertext
-                //Remove vertx with lowest f value from open list and make it currentt
             }
         }
 
+        List<Node> Path = new List<Node>();
+        CurrentNode = EndNode;
+
+        while (CurrentNode != null)
+        {
+            Path.Add(CurrentNode);
+            CurrentNode = CurrentNode.parent;
+        }
+        Path.Reverse();
+
+
+        return Path.ToArray();
     }
 
     // Update is called once per frame
     void Update()
     {
         
+    }
+
+    //Bubble sort
+    static List<Node> SortListByFScore(List<Node> unsortedList)
+    {
+        bool sorted = false;
+        while (!sorted)
+        {
+            sorted = true;
+            for (int i = 0; i < unsortedList.Count - 1; i++)
+            {
+                if (unsortedList[i].fScore > unsortedList[i + 1].fScore)
+                {
+                    Node temp = unsortedList[i];
+                    unsortedList[i] = unsortedList[i + 1];
+                    unsortedList[i + 1] = temp;
+                    sorted = false;
+                }
+            }
+        }
+
+        return unsortedList;
     }
 }
