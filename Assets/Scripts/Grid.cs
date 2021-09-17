@@ -7,33 +7,35 @@ using UnityEngine;
 public class Grid : MonoBehaviour
 {
     private static Node[,] grid;
-    private int Size = 5;
+    private int Size = 10;
+    public static float prefabSize = 2; 
 
     public GameObject GridPrefab; 
 
     // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
         grid = new Node[Size, Size];
 
+        
         for (int x = 0; x < Size; x ++)     //each row of the grid
         {
             for (int z = 0; z < Size; z++)  // each columm of the grid
             {
                 Node NewNode = new Node();
                 NewNode.Position = new Vector2(x, z);    //setting the position
-                Instantiate(GridPrefab, new Vector3(x, 0, z), Quaternion.identity);  //spawning a prefab
+                Instantiate(GridPrefab, new Vector3(x, 0, z) * prefabSize, Quaternion.identity);  //spawning a prefab
                 grid[x, z] = NewNode;   //takes node variable, puts it in array
 
                 //TODO
                 // add to newnode to its connecitons using grids
-                if (grid [x, z - 1] != null)        //if grid z adding 1 is not equal to null, checking if there is a node
+                if (z > 0 )//&& grid [x, z - 1] != null)        //if grid z adding 1 is not equal to null, checking if there is a node
                 {
                     NewNode.Connections.Add(grid[x, z - 1]);    //take away 1
                     grid[x, z - 1].Connections.Add(NewNode); //Makes the connection both ways
                 }
 
-                if (grid [x - 1, z] != null)
+                if (x > 0)// && grid [x - 1, z] != null)
                 {
                     NewNode.Connections.Add(grid[x - 1, z]);
                     grid[x - 1, z].Connections.Add(NewNode);
@@ -48,13 +50,14 @@ public class Grid : MonoBehaviour
         List<Node> ClosedNodes = new List<Node>();
         Node CurrentNode = grid[ Mathf.RoundToInt(StartPositon.x), Mathf.RoundToInt (StartPositon.y)];
         Node EndNode = grid[Mathf.RoundToInt(EndPositon.x), Mathf.RoundToInt(EndPositon.y)];
+        OpenNodes.Add(CurrentNode);
 
         while (OpenNodes.Count > 0)
         {
             OpenNodes = SortListByFScore(OpenNodes);
             CurrentNode = OpenNodes[0];
 
-            if (CurrentNode == EndNode)
+            if (CurrentNode.Position == EndNode.Position)
             {
                 break;
             }
@@ -64,6 +67,9 @@ public class Grid : MonoBehaviour
 
             foreach(Node c in CurrentNode.Connections)      //Simplifed for loops, go through the loop each time using the c node
             {
+                if (!c.walkable)
+                    ClosedNodes.Add(c);
+
                 if (!ClosedNodes.Contains(c))
                 {
                     float gScore;
@@ -104,10 +110,22 @@ public class Grid : MonoBehaviour
         return Path.ToArray();
     }
 
+
     // Update is called once per frame
     void Update()
     {
-        
+        //Grid.TurnOffNodeAtWorldPosition(transform.position);
+    }
+
+    public static Vector2 WorldToGridPosition(Vector3 position)
+    {
+        return new Vector2(position.x / prefabSize, position.z / prefabSize);
+    }
+
+    public static void TurnOffNodeAtWorldPosition(Vector3 position)
+    {
+        Vector2 gridPosition = WorldToGridPosition(position);
+        grid[Mathf.RoundToInt(gridPosition.x), Mathf.RoundToInt(gridPosition.y)].walkable = false;
     }
 
     //Bubble sort
