@@ -2964,7 +2964,7 @@ MonoBehaviour:
   waypoints: []
   speed: 5
   Ending:
-  - {fileID: 0}
+  - {fileID: 505163595}
   start: {x: 0, y: 0}
   destination: {x: 3, y: 4}
 --- !u!1001 &199016139
@@ -7272,6 +7272,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 01d5db6de63caf245b31a6ea573c6e39, type: 3}
+--- !u!1 &505163595 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 4471d176d2aaecc44871b57212ddfe45, type: 3}
+  m_PrefabInstance: {fileID: 1238952909}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &509477805
 GameObject:
   m_ObjectHideFlags: 0
