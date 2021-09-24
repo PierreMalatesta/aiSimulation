@@ -21,6 +21,7 @@ public class PlayerAI : MonoBehaviour
 
     Node[] Path;
 
+   //easiest way to state machines
     public enum State
     {
         Follow,
