@@ -7,7 +7,7 @@ using UnityEngine;
 public class Grid : MonoBehaviour
 {
     private static Node[,] grid;
-    private int Size = 10;
+    private int Size = 15;
     public static float prefabSize = 2; 
 
     public GameObject GridPrefab; 
