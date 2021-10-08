@@ -55,12 +55,17 @@ public class EnemyStateMachine : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Player"))
+        if (currentState ==  State.Follow)
         {
-            //change state to follow
-            //get grid position of this enemy use Grid.WorldToGridPosition()
-            //get grid position of player
-            //pathfind Grid.PathFind()
+            if (other.CompareTag("Player"))
+            {
+                //change state to follow
+                //get grid position of this enemy use Grid.WorldToGridPosition()
+                //get grid position of player
+                //pathfind Grid.PathFind()
+
+                other = Grid.FindPath(start, Grid.WorldToGridPosition(Ending.transform.position));
+            }
         }
     }
 }
