@@ -12,6 +12,13 @@ public class EnemyStateMachine : MonoBehaviour
 
     int currentWanderNode;
 
+
+    Transform Player;
+
+    float RotSpeed = 100f;
+    float MoveSpeed = 100f;
+
+
     //easiest way to state machines
     //do this for enemies not player.
     public enum State
@@ -24,7 +31,7 @@ public class EnemyStateMachine : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+        Player = GameObject.FindGameObjectWithTag("Player").transform;
     }
 
     // Update is called once per frame
@@ -51,20 +58,26 @@ public class EnemyStateMachine : MonoBehaviour
 
             }
         }
+
+        if (currentState == State.Follow)
+        {
+            transform.rotation = Quaternion.Slerp(transform.rotation
+                                            , Quaternion.LookRotation(Player.position - transform.position)
+                                            , RotSpeed * Time.deltaTime);
+        }
     }
 
     private void OnTriggerEnter(Collider other)
     {
         if (currentState ==  State.Follow)
         {
-            if (other.CompareTag("Player"))
+            if (other.tag == "Player")
             {
                 //change state to follow
                 //get grid position of this enemy use Grid.WorldToGridPosition()
                 //get grid position of player
                 //pathfind Grid.PathFind()
-
-                other = Grid.FindPath(start, Grid.WorldToGridPosition(Ending.transform.position));
+                currentState = State.Follow;
             }
         }
     }

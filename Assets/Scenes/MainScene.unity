@@ -24855,7 +24855,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 68eef9e605a8cd944874b04344644c98, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  currentState: 1
+  currentState: 0
   wanderNodes:
   - {fileID: 1678363403}
   - {fileID: 2041713124}
@@ -24878,8 +24878,8 @@ BoxCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 3.631546, y: 0.8039385, z: 4.058203}
-  m_Center: {x: 0.211164, y: 0.4019692, z: -0.19281721}
+  m_Size: {x: 12.824146, y: 0.8039385, z: 10.498185}
+  m_Center: {x: -0.17561054, y: 0.4019692, z: 1.9203391}
 --- !u!1001 &1265071530
 PrefabInstance:
   m_ObjectHideFlags: 0
