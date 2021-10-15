@@ -24,7 +24,7 @@ public class Grid : MonoBehaviour
             {
                 Node NewNode = new Node();
                 NewNode.Position = new Vector2(x, z);    //setting the position
-                Instantiate(GridPrefab, new Vector3(x, 0, z) * prefabSize, Quaternion.identity);  //spawning a prefab
+                Instantiate(GridPrefab, new Vector3(x, -0.5f, z) * prefabSize, Quaternion.identity);  //spawning a prefab
                 grid[x, z] = NewNode;   //takes node variable, puts it in array
 
                 //TODO
@@ -105,7 +105,7 @@ public class Grid : MonoBehaviour
             CurrentNode = CurrentNode.parent;
         }
         Path.Reverse();
-
+        ResetNodes();
 
         return Path.ToArray();
     }
@@ -126,6 +126,17 @@ public class Grid : MonoBehaviour
     {
         Vector2 gridPosition = WorldToGridPosition(position);
         grid[Mathf.RoundToInt(gridPosition.x), Mathf.RoundToInt(gridPosition.y)].walkable = false;
+    }
+
+    static void ResetNodes()
+    {
+        foreach (Node n in grid)
+        {
+            n.fScore = 0;
+            n.hScore = 0;
+            n.gScore = 0;
+            n.parent = null;
+        }
     }
 
     //Bubble sort

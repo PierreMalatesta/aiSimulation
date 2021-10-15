@@ -12,11 +12,17 @@ public class EnemyStateMachine : MonoBehaviour
 
     int currentWanderNode;
 
+    Node[] followNodes;
+
+
+    int currentFollowNode;
 
     Transform Player;
 
-    float RotSpeed = 100f;
-    float MoveSpeed = 100f;
+    //float RotSpeed = 100f;
+    //float MoveSpeed = 100f;
+
+    
 
 
     //easiest way to state machines
@@ -61,9 +67,26 @@ public class EnemyStateMachine : MonoBehaviour
 
         if (currentState == State.Follow)
         {
-            transform.rotation = Quaternion.Slerp(transform.rotation
-                                            , Quaternion.LookRotation(Player.position - transform.position)
-                                            , RotSpeed * Time.deltaTime);
+            if (followNodes != null && currentFollowNode < followNodes.Length)
+            {
+                transform.position = Vector3.MoveTowards(transform.position, followNodes[currentFollowNode].WorldPosition(), Time.deltaTime * speed);
+
+                if (Vector3.Distance(followNodes[currentFollowNode].WorldPosition(), transform.position) < WPradius)
+                {
+                    currentFollowNode++;
+                    if (currentFollowNode >= followNodes.Length)
+                    {
+                        currentFollowNode = 0;
+                        SetPathToPlayer();
+                    }
+                    
+                }
+            }
+
+
+            //transform.rotation = Quaternion.Slerp(transform.rotation
+            //                                , Quaternion.LookRotation(Player.position - transform.position)
+            //                                , RotSpeed * Time.deltaTime);
         }
     }
 
@@ -78,7 +101,21 @@ public class EnemyStateMachine : MonoBehaviour
                 //get grid position of player
                 //pathfind Grid.PathFind()
                 currentState = State.Follow;
+
+                SetPathToPlayer();
+
             }
         }
+    }
+
+    void SetPathToPlayer()
+    {
+        Vector2 Enemy = Grid.WorldToGridPosition(transform.position);
+        Vector2 playerGrid = Grid.WorldToGridPosition(Player.position);
+
+
+        followNodes = Grid.FindPath(Enemy, playerGrid);
+        currentFollowNode = 0;
+        Debug.Log("nothing");
     }
 }
