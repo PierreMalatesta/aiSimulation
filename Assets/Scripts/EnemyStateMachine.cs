@@ -31,7 +31,7 @@ public class EnemyStateMachine : MonoBehaviour
     {
         Follow,
         Wander,
-        Flee
+        Attack
     }
 
     // Start is called before the first frame update
@@ -106,6 +106,14 @@ public class EnemyStateMachine : MonoBehaviour
 
             }
         }
+
+       //dont do this but something similar for attack state
+        if (other.tag == "Player")
+        {
+            currentState = State.Attack;
+
+            Time.timeScale = 0; 
+        }
     }
 
     void SetPathToPlayer()
@@ -118,4 +126,5 @@ public class EnemyStateMachine : MonoBehaviour
         currentFollowNode = 0;
         Debug.Log("nothing");
     }
+
 }
