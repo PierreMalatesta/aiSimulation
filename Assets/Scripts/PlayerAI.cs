@@ -15,7 +15,6 @@ public class PlayerAI : MonoBehaviour
 
     public GameObject Ending;
 
-    public Vector2 start;
     public Vector2 destination;
 
     Node[] Path;
@@ -25,7 +24,7 @@ public class PlayerAI : MonoBehaviour
     void Start()
     {
         //test
-      
+        
     }
 
     // Update is called once per frame
@@ -33,7 +32,7 @@ public class PlayerAI : MonoBehaviour
     {
         if (Path == null)
         {
-            Path = Grid.FindPath(start, Grid.WorldToGridPosition(Ending.transform.position));
+            Path = Grid.FindPath(Grid.WorldToGridPosition(transform.position), Grid.WorldToGridPosition(Ending.transform.position));
         }
         //how to follow Vector3 array (Vector3 = path[x].WorldPosition)
         
@@ -54,6 +53,12 @@ public class PlayerAI : MonoBehaviour
             }
 
             
+        }
+
+
+        if (Input.GetKeyDown(KeyCode.T))
+        {
+            Debug.Log("Breakpoint");
         }
     }
 }

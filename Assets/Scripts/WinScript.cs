@@ -23,6 +23,7 @@ public class WinScript : MonoBehaviour
     {
         if (other.tag == "Player")
         {
+            Time.timeScale = 0;
             Panel.SetActive(true);
         }
     }

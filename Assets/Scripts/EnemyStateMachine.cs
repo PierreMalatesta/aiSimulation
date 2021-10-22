@@ -7,10 +7,12 @@ public class EnemyStateMachine : MonoBehaviour
     public State currentState;
     public Transform[] wanderNodes;
 
-    public Collider collider;
+    public Collider playerCollider;
 
     public float WPradius;
     public float speed;
+
+    public bool mightDeactivate;
 
     int currentWanderNode;
 
@@ -21,11 +23,7 @@ public class EnemyStateMachine : MonoBehaviour
 
     Transform Player;
 
-    //float RotSpeed = 100f;
-    //float MoveSpeed = 100f;
-
-    
-
+    public GameObject panel;
 
     //easiest way to state machines
     //do this for enemies not player.
@@ -39,7 +37,10 @@ public class EnemyStateMachine : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        Time.timeScale = 1;
         Player = GameObject.FindGameObjectWithTag("Player").transform;
+        speed -= Random.Range(0, 2f);
+        panel.SetActive(false);
     }
 
     // Update is called once per frame
@@ -63,7 +64,6 @@ public class EnemyStateMachine : MonoBehaviour
                     }
                 }
 
-
             }
         }
 
@@ -76,7 +76,8 @@ public class EnemyStateMachine : MonoBehaviour
                 if (Vector3.Distance(followNodes[currentFollowNode].WorldPosition(), transform.position) < WPradius)
                 {
                     currentFollowNode++;
-                    if (currentFollowNode >= followNodes.Length)
+                    if (currentFollowNode > 2) SetPathToPlayer();
+                    else if (currentFollowNode >= followNodes.Length)
                     {
                         currentFollowNode = 0;
                         SetPathToPlayer();
@@ -85,7 +86,13 @@ public class EnemyStateMachine : MonoBehaviour
                 }
             }
 
-
+            //once very close to player
+            if (Vector3.Distance(transform.position, Player.position) < 1f)
+            {
+                Time.timeScale = 0;
+                //turn on gameover screen
+                panel.SetActive(true);
+            }
             //transform.rotation = Quaternion.Slerp(transform.rotation
             //                                , Quaternion.LookRotation(Player.position - transform.position)
             //                                , RotSpeed * Time.deltaTime);
@@ -94,7 +101,7 @@ public class EnemyStateMachine : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (currentState ==  State.Follow)
+        if (currentState != State.Follow)
         {
             if (other.tag == "Player")
             {
@@ -109,13 +116,6 @@ public class EnemyStateMachine : MonoBehaviour
             }
         }
 
-       //dont do this but something similar for attack state
-        //if (collider.tag == "Enemy")
-        //{
-        //    currentState = State.Attack;
-
-        //    Time.timeScale = 0; 
-        //}
     }
 
    
