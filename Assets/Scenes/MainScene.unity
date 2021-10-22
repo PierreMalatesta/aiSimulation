@@ -3882,8 +3882,8 @@ CapsuleCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 196677339}
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
+  m_IsTrigger: 1
+  m_Enabled: 0
   m_Radius: 0.56
   m_Height: 1.87
   m_Direction: 1
@@ -24485,6 +24485,7 @@ MonoBehaviour:
   - {fileID: 224034517}
   - {fileID: 479532306}
   - {fileID: 1202003376}
+  collider: {fileID: 196677341}
   WPradius: 0.2
   speed: 5
 --- !u!65 &1264824355
@@ -24498,8 +24499,8 @@ BoxCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 2.4583483, y: 0.8039385, z: 2.726657}
-  m_Center: {x: 0.14832354, y: 0.4019692, z: 0.01804471}
+  m_Size: {x: 10.508871, y: 0.8039385, z: 12.28323}
+  m_Center: {x: 0.850708, y: 0.4019692, z: -0.2722683}
 --- !u!1001 &1265071530
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -28262,6 +28263,7 @@ MonoBehaviour:
   - {fileID: 1233157674}
   - {fileID: 1289811042}
   - {fileID: 1278611410}
+  collider: {fileID: 0}
   WPradius: 0.2
   speed: 5
 --- !u!65 &1402078657

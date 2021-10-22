@@ -6,7 +6,9 @@ public class EnemyStateMachine : MonoBehaviour
 {
     public State currentState;
     public Transform[] wanderNodes;
-    
+
+    public Collider collider;
+
     public float WPradius;
     public float speed;
 
@@ -108,13 +110,15 @@ public class EnemyStateMachine : MonoBehaviour
         }
 
        //dont do this but something similar for attack state
-        if (other.tag == "Player")
-        {
-            currentState = State.Attack;
+        //if (collider.tag == "Enemy")
+        //{
+        //    currentState = State.Attack;
 
-            Time.timeScale = 0; 
-        }
+        //    Time.timeScale = 0; 
+        //}
     }
+
+   
 
     void SetPathToPlayer()
     {
